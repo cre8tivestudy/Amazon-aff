@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Affiliate Link Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+        <div class="p-8">
+            <h1 class="text-2xl font-bold mb-4">Amazon Affiliate Link Generator</h1>
+            <div class="mb-4">
+                <label for="productUrl" class="block text-sm font-medium text-gray-700">Amazon Product URL:</label>
+                <input type="text" id="productUrl" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+            </div>
+            <div class="mb-4">
+                <label for="affiliateId" class="block text-sm font-medium text-gray-700">Your Affiliate ID:</label>
+                <input type="text" id="affiliateId" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+            </div>
+            <button onclick="generateLink()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Generate Affiliate Link
+            </button>
+            <div class="mt-4">
+                <label for="affiliateLink" class="block text-sm font-medium text-gray-700">Generated Affiliate Link:</label>
+                <textarea id="affiliateLink" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" rows="3" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateLink() {
+            const productUrl = document.getElementById('productUrl').value;
+            const affiliateId = document.getElementById('affiliateId').value;
+            
+            if (!productUrl || !affiliateId) {
+                alert('Please enter both the product URL and your affiliate ID.');
+                return;
+            }
+
+            let affiliateLink = '';
+
+            try {
+                const url = new URL(productUrl);
+                
+                // Remove existing tag if present
+                url.searchParams.delete('tag');
+                
+                // Add the affiliate tag
+                url.searchParams.append('tag', affiliateId);
+                
+                affiliateLink = url.toString();
+            } catch (error) {
+                alert('Invalid URL. Please enter a valid Amazon product URL.');
+                return;
+            }
+
+            document.getElementById('affiliateLink').value = affiliateLink;
+        }
+    </script>
+</body>
+</html>
